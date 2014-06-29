@@ -15,8 +15,9 @@ public class JdbcTemplateAddressDao extends JdbcDaoSupport implements AddressDao
 
 	@Override
 	public void save(Address address) {
-		//TODO: implement, use NamedParameterJdbcTemplate
-		throw new UnsupportedOperationException();
+		getJdbcTemplate().update(
+				"INSERT INTO address (city, country, street, zipcode) VALUES (?, ?, ?, ?) ",
+				address.getCity(), address.getCountry(), address.getStreet(), address.getZipCode());
 	}
 
 }
