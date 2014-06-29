@@ -19,24 +19,21 @@ public class JdbcAddressDao extends GenericJdbcDao implements AddressDao {
 
 	@Override
 	public void save(Address address) {
-		String sql = "INSERT INTO address (CITY, COUNTRY, STREET, ZIPCODE) VALUES (?, ?, ?, ?)";
-		try (Connection conn = dataSource.getConnection();
-				PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		String sql = "INSERT INTO ADDRESS " + " (CITY, COUNTRY, STREET, ZIPCODE) " + " VALUES (?, ?, ?, ?)";
+
+		try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			ps.setString(1, address.getCity());
 			ps.setString(2, address.getCountry());
 			ps.setString(3, address.getStreet());
 			ps.setString(4, address.getZipCode());
-			
-			ps.executeUpdate();
-			ResultSet rs = ps.getGeneratedKeys();
-			while (rs.next()) {
+			ps.execute();
+			try (ResultSet rs = ps.getGeneratedKeys()) {				
+				rs.next();			
 				address.setId(rs.getInt(1));
 			}
+		} catch (SQLException e) {
+			throw new RuntimeException();
 		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
 	}
 
 }

@@ -12,7 +12,7 @@ import com.epam.training.jp.jdbc.excercises.helper.DatabaseCreator;
 public class SpringConfigurationDataSource {
 	private static String dbUrl = "jdbc:mysql://localhost/sql_excercise";
 	private static String username = "root";
-	private static String password = "root";
+	private static String password = "1234";
 	
 	@Bean
 	public DataSource dataSource() {
